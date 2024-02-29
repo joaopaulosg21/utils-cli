@@ -9,7 +9,8 @@ import java.net.http.HttpResponse.BodyHandlers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import projeto.cli.utils.pojos.Login;
+import projeto.cli.utils.dto.LoginDTO;
+import projeto.cli.utils.dto.TokenResponseDTO;
 
 public class Client {
 
@@ -19,7 +20,7 @@ public class Client {
 
     private final String baseURI = "http://localhost:8080/";
 
-    public void login(Login login) throws Exception {
+    public TokenResponseDTO login(LoginDTO login) throws Exception {
 
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(BodyPublishers.ofString(mapper.writeValueAsString(login)))
@@ -29,6 +30,6 @@ public class Client {
 
         HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
 
-        System.out.println(response.body());
+        return mapper.readValue(response.body(), TokenResponseDTO.class);
     }
 }

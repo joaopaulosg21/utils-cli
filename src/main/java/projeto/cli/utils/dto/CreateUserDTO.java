@@ -1,15 +1,15 @@
-package projeto.cli.utils.pojos;
+package projeto.cli.utils.dto;
 
-public class CreateUser {
+public class CreateUserDTO {
     private String email;
 
     private String name;
 
     private String password;
 
-    public CreateUser() {}
+    public CreateUserDTO() {}
 
-    public CreateUser(String email, String name, String password) {
+    public CreateUserDTO(String email, String name, String password) {
         this.email = email;
         this.name = name;
         this.password = password;

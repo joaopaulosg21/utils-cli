@@ -3,19 +3,20 @@ package projeto.cli.utils.service;
 import java.util.Scanner;
 
 import projeto.cli.utils.api.Client;
-import projeto.cli.utils.pojos.Login;
+import projeto.cli.utils.dto.LoginDTO;
+import projeto.cli.utils.dto.TokenResponseDTO;
 
 public class LoginService {
-    
+
     private Client client;
 
     public LoginService(Client client) {
         this.client = client;
     }
 
-    public void login() throws Exception{
+    public TokenResponseDTO login() throws Exception {
         Scanner sc = new Scanner(System.in);
-        Login login = new Login();
+        LoginDTO login = new LoginDTO();
         System.out.print("Digite seu email: ");
         login.setEmail(sc.nextLine());
 
@@ -24,6 +25,6 @@ public class LoginService {
 
         sc.close();
 
-        client.login(login);
+        return client.login(login);
     }
 }
