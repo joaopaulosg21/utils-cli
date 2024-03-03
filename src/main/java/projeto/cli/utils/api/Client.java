@@ -20,16 +20,22 @@ public class Client {
 
     private final String baseURI = "http://localhost:8080/";
 
-    public TokenResponseDTO login(LoginDTO login) throws Exception {
+    public TokenResponseDTO login(LoginDTO login) {
 
-        HttpRequest request = HttpRequest.newBuilder()
-                .POST(BodyPublishers.ofString(mapper.writeValueAsString(login)))
-                .setHeader("Content-Type", "application/json")
-                .uri(new URI(baseURI + "api/users/login"))
-                .build();
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .POST(BodyPublishers.ofString(mapper.writeValueAsString(login)))
+                    .setHeader("Content-Type", "application/json")
+                    .uri(new URI(baseURI + "api/users/login"))
+                    .build();
 
-        HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
+            HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
 
-        return mapper.readValue(response.body(), TokenResponseDTO.class);
+            return mapper.readValue(response.body(), TokenResponseDTO.class);
+        } catch (Exception e) {
+            System.out.println("Email ou senha incorretos tente novamente");
+        }
+
+        return null;
     }
 }
