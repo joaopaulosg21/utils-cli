@@ -10,8 +10,11 @@ public class LoginService {
 
     private Client client;
 
-    public LoginService(Client client) {
+    private FoldersService foldersService;
+
+    public LoginService(Client client, FoldersService foldersService) {
         this.client = client;
+        this.foldersService = foldersService;
     }
 
     public TokenResponseDTO login() throws Exception {
@@ -24,7 +27,9 @@ public class LoginService {
         login.setPassword(sc.nextLine());
 
         sc.close();
-
-        return client.login(login);
+        TokenResponseDTO tokenResponseDTO = client.login(login);
+        foldersService.createDirectory();
+        foldersService.createFile(tokenResponseDTO);
+        return tokenResponseDTO;
     }
 }
