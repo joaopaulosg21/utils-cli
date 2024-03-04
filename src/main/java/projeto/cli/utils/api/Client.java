@@ -6,10 +6,14 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpRequest.BodyPublishers;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
+import java.util.List;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import projeto.cli.utils.dto.LoginDTO;
+import projeto.cli.utils.dto.TaskDTO;
 import projeto.cli.utils.dto.TokenDTO;
 
 public class Client {
@@ -39,7 +43,21 @@ public class Client {
         return null;
     }
 
-    public void findAllTasks(TokenDTO tokenDTO) {
-
+    public List<TaskDTO> findAllTasks(String token) {
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .GET()
+                    .setHeader("Content-Type", "application/json")
+                    .setHeader("Authorization", "Bearer " + token)
+                    .uri(new URI(baseURI + "api/tasks/find/all"))
+                    .build();
+            HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
+            mapper.configure(DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE, false);
+            mapper.findAndRegisterModules();
+            return mapper.readValue(response.body(), new TypeReference<List<TaskDTO>>() {});
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return List.of();
     }
 }

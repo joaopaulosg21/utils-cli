@@ -37,4 +37,11 @@ public class FoldersService {
             Files.write(newPath, mappper.writeValueAsString(tokenDTO).getBytes());
         }
     }
+
+    public TokenDTO findToken() throws IOException{
+        Path fullPath = Paths.get(path + "credentials/token.json");
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.readValue(Files.readString(fullPath), TokenDTO.class);
+
+    }
 }
