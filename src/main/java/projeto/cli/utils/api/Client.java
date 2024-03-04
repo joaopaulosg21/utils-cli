@@ -10,7 +10,7 @@ import java.net.http.HttpResponse.BodyHandlers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import projeto.cli.utils.dto.LoginDTO;
-import projeto.cli.utils.dto.TokenResponseDTO;
+import projeto.cli.utils.dto.TokenDTO;
 
 public class Client {
 
@@ -20,7 +20,7 @@ public class Client {
 
     private final String baseURI = "http://localhost:8080/";
 
-    public TokenResponseDTO login(LoginDTO login) {
+    public TokenDTO login(LoginDTO login) {
 
         try {
             HttpRequest request = HttpRequest.newBuilder()
@@ -31,11 +31,15 @@ public class Client {
 
             HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
 
-            return mapper.readValue(response.body(), TokenResponseDTO.class);
+            return mapper.readValue(response.body(), TokenDTO.class);
         } catch (Exception e) {
             System.out.println("Email ou senha incorretos tente novamente");
         }
 
         return null;
+    }
+
+    public void findAllTasks(TokenDTO tokenDTO) {
+
     }
 }

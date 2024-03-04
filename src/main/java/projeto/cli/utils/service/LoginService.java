@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 import projeto.cli.utils.api.Client;
 import projeto.cli.utils.dto.LoginDTO;
-import projeto.cli.utils.dto.TokenResponseDTO;
+import projeto.cli.utils.dto.TokenDTO;
 
 public class LoginService {
 
@@ -17,7 +17,7 @@ public class LoginService {
         this.foldersService = foldersService;
     }
 
-    public TokenResponseDTO login() throws Exception {
+    public TokenDTO login() throws Exception {
         Scanner sc = new Scanner(System.in);
         LoginDTO login = new LoginDTO();
         System.out.print("Digite seu email: ");
@@ -27,7 +27,7 @@ public class LoginService {
         login.setPassword(sc.nextLine());
 
         sc.close();
-        TokenResponseDTO tokenResponseDTO = client.login(login);
+        TokenDTO tokenResponseDTO = client.login(login);
         foldersService.createDirectory();
         foldersService.createFile(tokenResponseDTO);
         return tokenResponseDTO;

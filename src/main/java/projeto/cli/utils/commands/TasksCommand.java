@@ -10,6 +10,9 @@ public class TasksCommand implements Runnable {
     @Option(names = { "-l", "-login" })
     private boolean login;
 
+    @Option(names = { "-t", "-tasks" })
+    private boolean tasks;
+
     private LoginService loginService;
 
     public TasksCommand(LoginService loginService) {
@@ -22,8 +25,10 @@ public class TasksCommand implements Runnable {
         try {
             if (login) {
                 this.loginService.login();
+            } else if (tasks) {
+                System.out.println("Tasks");
             } else {
-                System.out.println("Nao funcionou");
+                System.out.println("Deu erro");
             }
         } catch (Exception e) {
         }

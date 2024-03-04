@@ -7,7 +7,7 @@ import java.nio.file.Paths;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import projeto.cli.utils.dto.TokenResponseDTO;
+import projeto.cli.utils.dto.TokenDTO;
 
 public class FoldersService {
 
@@ -25,16 +25,16 @@ public class FoldersService {
         }
     }
 
-    public void createFile(TokenResponseDTO tokenResponseDTO) throws IOException {
+    public void createFile(TokenDTO tokenDTO) throws IOException {
         ObjectMapper mappper = new ObjectMapper();
-        if (Files.exists(Paths.get(path + "credentials/token.json"))) {
-            Files.write(Paths.get(path + "credentials/token.json"),
-                    mappper.writeValueAsString(tokenResponseDTO).getBytes());
+        Path fullPath = Paths.get(path + "credentials/token.json");
+        if (Files.exists(fullPath)) {
+            Files.write(fullPath, mappper.writeValueAsString(tokenDTO).getBytes());
             System.out.println("Token de acesso atualizado");
         } else {
-            Path newPath = Files.createFile(Paths.get(path + "credentials/token.json"));
+            Path newPath = Files.createFile(fullPath);
             System.out.println("Arquivo com as credenciais criado com sucesso: " + newPath);
-            Files.write(newPath, mappper.writeValueAsString(tokenResponseDTO).getBytes());
+            Files.write(newPath, mappper.writeValueAsString(tokenDTO).getBytes());
         }
     }
 }
