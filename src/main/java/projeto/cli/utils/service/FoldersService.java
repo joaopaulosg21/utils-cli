@@ -15,12 +15,8 @@ public class FoldersService {
 
     public void createDirectory() throws Exception {
 
-        if (Files.exists(Paths.get(path))) {
-            System.out.println("Caminho ja existe");
-        } else {
-
+        if (!Files.exists(Paths.get(path))) {
             Path newPath = Files.createDirectories(Paths.get(path + "credentials/"));
-
             System.out.println("Caminho criado com seu token de acesso: " + newPath);
         }
     }
@@ -33,15 +29,14 @@ public class FoldersService {
             System.out.println("Token de acesso atualizado");
         } else {
             Path newPath = Files.createFile(fullPath);
-            System.out.println("Arquivo com as credenciais criado com sucesso: " + newPath);
             Files.write(newPath, mappper.writeValueAsString(tokenDTO).getBytes());
+            System.out.println("Arquivo com as credenciais criado com sucesso: " + newPath);
         }
     }
 
-    public TokenDTO findToken() throws IOException{
+    public TokenDTO findToken() throws IOException {
         Path fullPath = Paths.get(path + "credentials/token.json");
         ObjectMapper mapper = new ObjectMapper();
         return mapper.readValue(Files.readString(fullPath), TokenDTO.class);
-
     }
 }
