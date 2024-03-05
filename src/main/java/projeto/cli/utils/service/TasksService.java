@@ -1,5 +1,6 @@
 package projeto.cli.utils.service;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import projeto.cli.utils.api.Client;
@@ -22,9 +23,20 @@ public class TasksService {
 
             TokenDTO token = foldersService.findToken();
 
-            List<TaskDTO> obj = client.findAllTasks(token.token());
-            System.out.println(obj);
+            List<TaskDTO> list = client.findAllTasks(token.token());
+
+            String alignFormat = "| %-24s | %-21s | %-11s|%n";
+
+            System.out.format("+--------------------------+-----------------------+------------+%n");
+            System.out.format("| Descrição                | Data                  | Completa   |%n");
+            System.out.format("+--------------------------+-----------------------+------------+%n");
+            for (TaskDTO taskDTO : list) {
+                String date = taskDTO.time().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
+                System.out.format(alignFormat, taskDTO.description(), date, taskDTO.completed());
+            }
+            System.out.format("+--------------------------+-----------------------+------------+%n");
         } catch (Exception e) {
+            e.printStackTrace();
             System.out.println("Arquivo com as credenciais não existe efetue o login");
         }
     }
