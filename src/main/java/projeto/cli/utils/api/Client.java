@@ -43,21 +43,16 @@ public class Client {
         return null;
     }
 
-    public List<TaskDTO> findAllTasks(String token) {
-        try {
-            HttpRequest request = HttpRequest.newBuilder()
-                    .GET()
-                    .setHeader("Content-Type", "application/json")
-                    .setHeader("Authorization", "Bearer " + token)
-                    .uri(new URI(baseURI + "api/tasks/find/all"))
-                    .build();
-            HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
-            mapper.configure(DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE, false);
-            mapper.findAndRegisterModules();
-            return mapper.readValue(response.body(), new TypeReference<List<TaskDTO>>() {});
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return List.of();
+    public List<TaskDTO> findAllTasks(String token) throws Exception {
+        HttpRequest request = HttpRequest.newBuilder()
+                .GET()
+                .setHeader("Content-Type", "application/json")
+                .setHeader("Authorization", "Bearer " + token)
+                .uri(new URI(baseURI + "api/tasks/find/all"))
+                .build();
+        HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
+        mapper.configure(DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE, false);
+        mapper.findAndRegisterModules();
+        return mapper.readValue(response.body(), new TypeReference<List<TaskDTO>>() {});
     }
 }

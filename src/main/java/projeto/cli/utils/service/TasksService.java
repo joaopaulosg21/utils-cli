@@ -36,8 +36,7 @@ public class TasksService {
             }
             System.out.format("+--------------------------+-----------------------+------------+%n");
         } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Arquivo com as credenciais não existe efetue o login");
+            System.out.println("Arquivo com as credenciais não existe ou token invalido efetue o login novamente");
         }
     }
 }
