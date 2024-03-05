@@ -3,6 +3,7 @@ package projeto.cli.utils.commands;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import projeto.cli.utils.service.LoginService;
+import projeto.cli.utils.service.TasksService;
 
 @Command(name = "tasks", description = "Commando de tasks")
 public class TasksCommand implements Runnable {
@@ -15,8 +16,11 @@ public class TasksCommand implements Runnable {
 
     private LoginService loginService;
 
-    public TasksCommand(LoginService loginService) {
+    private TasksService tasksService;
+
+    public TasksCommand(LoginService loginService, TasksService tasksService) {
         this.loginService = loginService;
+        this.tasksService = tasksService;
     }
 
     @Override
@@ -26,7 +30,7 @@ public class TasksCommand implements Runnable {
             if (login) {
                 this.loginService.login();
             } else if (tasks) {
-                System.out.println("Tasks");
+                this.tasksService.findAll();
             } else {
                 System.out.println("Deu erro");
             }
